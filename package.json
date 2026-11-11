@@ -1,16 +1,17 @@
 {
-  "name": "@notionhq/notion-mcp-server",
+  "name": "@jctaylor11/notion-mcp-server",
   "keywords": [
     "notion",
     "api",
     "mcp",
     "server"
   ],
-  "version": "2.6.1",
+  "version": "2.7.0",
   "license": "MIT",
   "type": "module",
   "scripts": {
     "build": "tsc -build && node scripts/build-cli.js",
+    "prepublishOnly": "npm run build && npm test",
     "dev": "tsx watch scripts/start-server.ts",
     "test": "NODE_ENV=test vitest run",
     "test:watch": "NODE_ENV=test vitest",
@@ -18,6 +19,12 @@
   },
   "bin": {
     "notion-mcp-server": "bin/cli.mjs"
+  },
+  "files": [
+    "bin"
+  ],
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",
@@ -51,15 +58,20 @@
       "@hono/node-server": "^2.0.5"
     }
   },
-  "description": "Official MCP server for Notion API",
-  "main": "index.js",
+  "description": "Fork of the Notion MCP server with additional tools (create-database, create-view)",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/makenotion/notion-mcp-server.git"
+    "url": "git+https://github.com/jctaylor11/notion-mcp-server.git"
   },
-  "author": "@notionhq",
+  "author": "jctaylor11 (https://github.com/jctaylor11)",
+  "contributors": [
+    {
+      "name": "Notion",
+      "url": "https://github.com/makenotion/notion-mcp-server"
+    }
+  ],
   "bugs": {
-    "url": "https://github.com/makenotion/notion-mcp-server/issues"
+    "url": "https://github.com/jctaylor11/notion-mcp-server/issues"
   },
-  "homepage": "https://github.com/makenotion/notion-mcp-server#readme"
+  "homepage": "https://github.com/jctaylor11/notion-mcp-server#readme"
 }

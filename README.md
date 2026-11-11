@@ -1,4 +1,23 @@
-# Notion MCP Server
+# Notion MCP Server (fork)
+
+> [!NOTE]
+>
+> This is a fork of [makenotion/notion-mcp-server](https://github.com/makenotion/notion-mcp-server),
+> published as [`@jctaylor11/notion-mcp-server`](https://www.npmjs.com/package/@jctaylor11/notion-mcp-server).
+> Setup, configuration and usage are unchanged from upstream and documented below.
+
+## What's different from upstream
+
+Two additional tools, added to the OpenAPI spec in `scripts/notion-openapi.json`:
+
+- `create-database` - Create a database
+- `create-view` - Create a view on a database
+
+## Why this fork exists
+
+Upstream is no longer actively maintained and does not expose database or view creation. This fork adds those tools so agents can build out workspace structure, not only edit existing content.
+
+---
 
 > [!NOTE]
 >
@@ -142,7 +161,7 @@ Add the following to your `.cursor/mcp.json` or `claude_desktop_config.json` (Ma
   "mcpServers": {
     "notionApi": {
       "command": "npx",
-      "args": ["-y", "@notionhq/notion-mcp-server"],
+      "args": ["-y", "@jctaylor11/notion-mcp-server"],
       "env": {
         "NOTION_TOKEN": "ntn_****"
       }
@@ -158,7 +177,7 @@ Add the following to your `.cursor/mcp.json` or `claude_desktop_config.json` (Ma
   "mcpServers": {
     "notionApi": {
       "command": "npx",
-      "args": ["-y", "@notionhq/notion-mcp-server"],
+      "args": ["-y", "@jctaylor11/notion-mcp-server"],
       "env": {
         "OPENAPI_MCP_HEADERS": "{\"Authorization\": \"Bearer ntn_****\", \"Notion-Version\": \"2025-09-03\" }"
       }
@@ -177,7 +196,7 @@ Add the following to your `settings.json`
     "some-context-server": {
       "command": {
         "path": "npx",
-        "args": ["-y", "@notionhq/notion-mcp-server"],
+        "args": ["-y", "@jctaylor11/notion-mcp-server"],
         "env": {
           "OPENAPI_MCP_HEADERS": "{\"Authorization\": \"Bearer ntn_****\", \"Notion-Version\": \"2025-09-03\" }"
         }
@@ -203,7 +222,7 @@ Alternatively, create or edit the configuration file `~/.copilot/mcp-config.json
   "mcpServers": {
     "notionApi": {
       "command": "npx",
-      "args": ["-y", "@notionhq/notion-mcp-server"],
+      "args": ["-y", "@jctaylor11/notion-mcp-server"],
       "env": {
         "NOTION_TOKEN": "ntn_****"
       }
@@ -336,10 +355,10 @@ The default transport mode uses standard input/output for communication. This is
 
 ```bash
 # Run with default stdio transport
-npx @notionhq/notion-mcp-server
+npx @jctaylor11/notion-mcp-server
 
 # Or explicitly specify stdio
-npx @notionhq/notion-mcp-server --transport stdio
+npx @jctaylor11/notion-mcp-server --transport stdio
 ```
 
 #### Streamable HTTP transport
@@ -348,16 +367,16 @@ For web-based applications or clients that prefer HTTP communication, you can us
 
 ```bash
 # Run with Streamable HTTP transport on port 3000 (default)
-npx @notionhq/notion-mcp-server --transport http
+npx @jctaylor11/notion-mcp-server --transport http
 
 # Run on a custom port
-npx @notionhq/notion-mcp-server --transport http --port 8080
+npx @jctaylor11/notion-mcp-server --transport http --port 8080
 
 # Bind to a different host. The default is 127.0.0.1.
-npx @notionhq/notion-mcp-server --transport http --host 0.0.0.0
+npx @jctaylor11/notion-mcp-server --transport http --host 0.0.0.0
 
 # Run with a custom authentication token
-npx @notionhq/notion-mcp-server --transport http --auth-token "your-secret-token"
+npx @jctaylor11/notion-mcp-server --transport http --auth-token "your-secret-token"
 ```
 
 When using Streamable HTTP transport, the server will be available at `http://127.0.0.1:<port>/mcp` by default.
@@ -369,7 +388,7 @@ The Streamable HTTP transport requires bearer token authentication for security.
 ###### Option 1: Auto-generated token (only for development)
 
 ```bash
-npx @notionhq/notion-mcp-server --transport http
+npx @jctaylor11/notion-mcp-server --transport http
 ```
 
 The server will generate a secure random token and write it to a file with restricted permissions:
@@ -381,13 +400,13 @@ Generated auth token written to: /tmp/.notion-mcp-auth-token-12345
 ###### Option 2: Custom token via command line (recommended for production)
 
 ```bash
-npx @notionhq/notion-mcp-server --transport http --auth-token "your-secret-token"
+npx @jctaylor11/notion-mcp-server --transport http --auth-token "your-secret-token"
 ```
 
 ###### Option 3: Custom token via environment variable (recommended for production)
 
 ```bash
-AUTH_TOKEN="your-secret-token" npx @notionhq/notion-mcp-server --transport http
+AUTH_TOKEN="your-secret-token" npx @jctaylor11/notion-mcp-server --transport http
 ```
 
 The command line argument `--auth-token` takes precedence over the `AUTH_TOKEN` environment variable if both are provided.
@@ -397,7 +416,7 @@ The command line argument `--auth-token` takes precedence over the `AUTH_TOKEN` 
 You can disable bearer token authentication only with the explicit unsafe flag:
 
 ```bash
-npx @notionhq/notion-mcp-server --transport http --unsafe-disable-auth
+npx @jctaylor11/notion-mcp-server --transport http --unsafe-disable-auth
 ```
 
 WARNING: `--unsafe-disable-auth` is unsafe. The server may be reachable to pages you visit via DNS rebinding. Only use it on an isolated network.
@@ -428,7 +447,7 @@ client supplies its own Notion integration token per connection:
 
 ```bash
 # Enable per-request Notion tokens (flag or ENABLE_TOKEN_PASSTHROUGH=true)
-npx @notionhq/notion-mcp-server --transport http --enable-token-passthrough
+npx @jctaylor11/notion-mcp-server --transport http --enable-token-passthrough
 ```
 
 Clients then send their Notion token on the **initialize** request using the
@@ -498,7 +517,7 @@ npm test
 #### Execute
 
 ```bash
-npx -y --prefix /path/to/local/notion-mcp-server @notionhq/notion-mcp-server
+npx -y --prefix /path/to/local/notion-mcp-server @jctaylor11/notion-mcp-server
 ```
 
 Testing changes locally in Cursor:
